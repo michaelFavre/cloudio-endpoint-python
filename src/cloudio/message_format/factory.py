@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from cloudio.message_format.xml_format import XmlMessageFormat
 from ..interface.message_format import CloudioMessageFormat
 from .json_format import JsonMessageFormat
 from .jsonzip_format import JsonZipMessageFormat
@@ -28,6 +28,9 @@ class MessageFormatFactory():
                 cls.formats[messageFormatId] = newFormat
             if messageFormatId == 'z':
                 newFormat = JsonZipMessageFormat()
+                cls.formats[messageFormatId] = newFormat
+            if messageFormatId == '<':
+                newFormat = XmlMessageFormat()
                 cls.formats[messageFormatId] = newFormat
 
             return newFormat

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import utils.py_version_compatibility as types
+from cloudio.cloudio_attribute_constraint import CloudioAttributeConstraint
 from .interface.object_container import CloudioObjectContainer
 from .interface.attribute_container import CloudioAttributeContainer
 from .exception.invalid_cloudio_attribute_exception import InvalidCloudioAttributeException
@@ -52,6 +53,12 @@ class CloudioObject():
 
     def getParentObjectContainer(self):
         return self._internal.getParentObjectContainer()
+
+    def setParentObjectContainer(self,objectContainer):
+        self._internal.setParentObjectContainer(objectContainer)
+
+    def addAttribute(self, attributeName, attribute):
+        self._internal.addAttributes(attributeName, attribute)
 
 class _InternalObject(CloudioObjectContainer, CloudioAttributeContainer):
 
@@ -182,6 +189,9 @@ class _InternalObject(CloudioObjectContainer, CloudioAttributeContainer):
                     return object
         return None
 
+    def addAttributes(self, attributeName, attribute):
+        self._attributes[attributeName] = attribute
+
     def getAttributes(self):
         """Returns the contained attributes in this object as a list
         :return A dictionary of attributes
@@ -207,7 +217,7 @@ class _InternalObject(CloudioObjectContainer, CloudioAttributeContainer):
 
                         if field not in ('__module__', '__doc__'):  # Some excludes:
                             attribute = CloudioAttribute()
-                            attribute.setConstraint('static')
+                            attribute.setConstraint(CloudioAttributeConstraint("Static"))
                             attribute.setName(field)
                             attribute.setParent(self)
                             attribute.setStaticValue(attr)
